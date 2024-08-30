@@ -16,8 +16,8 @@ function App() {
 
   const calculate = () => {
     try {
-      // Check if input is empty
-      if (input === '') {
+      // Check if input is empty or ends with an operator
+      if (input === '' || /[+\-*/]$/.test(input)) {
         setInput('Error');
         return;
       }
@@ -26,7 +26,11 @@ function App() {
       const result = eval(input);
 
       // Handle edge cases
-      if (isNaN(result)) {
+      if (input === '0/0') {
+        setInput('NaN');
+      } else if (input.includes('/0')) {
+        setInput('Infinity');
+      } else if (isNaN(result)) {
         setInput('NaN');
       } else if (result === Infinity) {
         setInput('Infinity');
@@ -38,35 +42,36 @@ function App() {
     }
   };
 
+
   return (
-    <div className="App">
-     <input type="text" className="input" value={input} readOnly />
-      <br />
-      <div className="button-row">
-        <button className="button" onClick={() => appendValue('7')}>7</button>
-        <button className="button" onClick={() => appendValue('8')}>8</button>
-        <button className="button" onClick={() => appendValue('9')}>9</button>
-        <button className="button" onClick={() => appendValue('/')}>/</button>
-      </div>
-      <div className="button-row">
-        <button className="button" onClick={() => appendValue('4')}>4</button>
-        <button className="button" onClick={() => appendValue('5')}>5</button>
-        <button className="button" onClick={() => appendValue('6')}>6</button>
-        <button className="button" onClick={() => appendValue('*')}>*</button>
-      </div>
-      <div className="button-row">
-        <button className="button" onClick={() => appendValue('1')}>1</button>
-        <button className="button" onClick={() => appendValue('2')}>2</button>
-        <button className="button" onClick={() => appendValue('3')}>3</button>
-        <button className="button" onClick={() => appendValue('-')}>-</button>
-      </div>
-      <div className="button-row">
-        <button className="button" onClick={() => appendValue('0')}>0</button>
-        <button className="button button-clear" onClick={clearInput}>C</button>
-        <button className="button button-equal" onClick={calculate}>=</button>
-        <button className="button" onClick={() => appendValue('+')}>+</button>
-      </div>
+    <div className="calculator">
+    <input type="text" className="input" value={input} readOnly />
+    <br />
+    <div className="button-row">
+      <button className="button" onClick={() => appendValue('7')}>7</button>
+      <button className="button" onClick={() => appendValue('8')}>8</button>
+      <button className="button" onClick={() => appendValue('9')}>9</button>
+      <button className="button" onClick={() => appendValue('/')}>/</button>
     </div>
+    <div className="button-row">
+      <button className="button" onClick={() => appendValue('4')}>4</button>
+      <button className="button" onClick={() => appendValue('5')}>5</button>
+      <button className="button" onClick={() => appendValue('6')}>6</button>
+      <button className="button" onClick={() => appendValue('*')}>*</button>
+    </div>
+    <div className="button-row">
+      <button className="button" onClick={() => appendValue('1')}>1</button>
+      <button className="button" onClick={() => appendValue('2')}>2</button>
+      <button className="button" onClick={() => appendValue('3')}>3</button>
+      <button className="button" onClick={() => appendValue('-')}>-</button>
+    </div>
+    <div className="button-row">
+      <button className="button" onClick={() => appendValue('0')}>0</button>
+      <button className="button button-clear" onClick={clearInput}>C</button>
+      <button className="button button-equal" onClick={calculate}>=</button>
+      <button className="button" onClick={() => appendValue('+')}>+</button>
+    </div>
+  </div>
   );
 }
 
